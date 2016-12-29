@@ -6,13 +6,7 @@
 #ifndef BITCOIN_NET_PROCESSING_H
 #define BITCOIN_NET_PROCESSING_H
 
-#include "net.h"
 #include "validationinterface.h"
-
-/** Register with a network node to receive its signals */
-void RegisterNodeSignals(CNodeSignals& nodeSignals);
-/** Unregister a network node */
-void UnregisterNodeSignals(CNodeSignals& nodeSignals);
 
 class PeerLogicValidation : public CValidationInterface {
 private:
@@ -37,6 +31,10 @@ struct CNodeStateStats {
 bool GetNodeStateStats(NodeId nodeid, CNodeStateStats &stats);
 /** Increase a node's misbehavior score. */
 void Misbehaving(NodeId nodeid, int howmuch);
+
+void InitializeNode(CNode *pnode, CConnman& connman);
+
+void FinalizeNode(NodeId nodeid, bool& fUpdateConnectionTime);
 
 /** Process protocol messages received from a given node */
 bool ProcessMessages(CNode* pfrom, CConnman& connman);

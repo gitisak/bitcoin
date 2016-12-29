@@ -12,6 +12,7 @@
 #include "key.h"
 #include "validation.h"
 #include "miner.h"
+#include "net.h"
 #include "net_processing.h"
 #include "pubkey.h"
 #include "random.h"
@@ -80,12 +81,10 @@ TestingSetup::TestingSetup(const std::string& chainName) : BasicTestingSetup(cha
             threadGroup.create_thread(&ThreadScriptCheck);
         g_connman = std::unique_ptr<CConnman>(new CConnman(0x1337, 0x1337)); // Deterministic randomness for tests.
         connman = g_connman.get();
-        RegisterNodeSignals(GetNodeSignals());
 }
 
 TestingSetup::~TestingSetup()
 {
-        UnregisterNodeSignals(GetNodeSignals());
         threadGroup.interrupt_all();
         threadGroup.join_all();
         UnloadBlockIndex();
